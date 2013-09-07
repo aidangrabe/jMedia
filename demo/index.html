@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="jmedia.css" />
+    <script src="/lib/js/jquery/jquery.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="jmedia">
+            jMedia Test
+        </div> <!-- .jmedia -->
+    </div> <!-- -->
+    <script src="../jmedia.js"></script>
+    <script>
+        jmedia.addBreakPoint('mobile', 480);
+        jmedia.addBreakPoint('tablet', 720);
+
+        jmedia.onresize = function(c) {
+            switch (c) {
+            case 'mobile':
+                console.log('small screen, mobile');
+                break;
+            case 'tablet':
+                console.log('medium screen, must be tablet!');
+                break;
+            default:
+                console.log('default/larger than any break point, ie. desktop');
+                break;
+            }
+        }
+
+        jmedia.resize();
+    </script>
+</body>
+
+</html>

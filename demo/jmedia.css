@@ -1,0 +1,13 @@
+.mobile .jmedia {
+    background: red;
+}
+.tablet .jmedia {
+    background: green;
+}
+.desktop .jmedia {
+    background: blue;
+}
+
+.jmedia {
+    background: yellow;
+}
