@@ -40,7 +40,7 @@
                 return a.width - b.width
             });
         },
-        onresize: function(clss) {},
+        onresize: function() {},
         resize: window.onresize
     };
 
