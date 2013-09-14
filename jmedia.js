@@ -1,6 +1,6 @@
 (function($) {
     var $body = $('body');
-    var lastWidth = document.width;
+    var lastClass = "none";
     var breakPoints = [];
 
     // assign any window resize function to a variable so as not to override
@@ -12,38 +12,37 @@
         // call the original event
         oldWindowResize();
 
-        var w = document.width;
-        var newWidth  = 0;
         var newClass = '';
 
         // loop through the break points to check which one the current width
         // falls into
         for (var key in breakPoints) {
             var breakPoint = breakPoints[key];
-            if (newWidth == 0 && w < breakPoint.width) {
-                newWidth = breakPoint.width;
+            if (document.width < breakPoint.width) {
                 newClass = breakPoint.class;
-                // if we are in the same breakpoint as the last check, don't
-                // change the class of any elements, and only run the onresize
-                // method, not the onchange method
-                if (lastWidth == newWidth) {
-                    window.jmedia.onresize(newClass);
-                    return;
-                }
             }
             // essentially removes all breakpoint classes from the body
             $body.removeClass(breakPoint.class);
         }
+        // default class
+        if (newClass == "")
+            newClass = breakPoints[0].class;
 
         // add the new breakpoint class to the body
         $body.addClass(newClass);
-        // update the last check width
-        lastWidth = newWidth;
 
+        // if the breakpoint hasn't changed, return here and call the onresize
+        // callback
+        if (newClass == lastClass) {
+            window.jmedia.onresize(newClass);
+            lastClass = newClass;
+            return;
+        }
         // execute both methods as the window has been resized + the breakpoint
         // class has changed
         window.jmedia.onresize(newClass);
-        window.jmedia.onchange(newClass);
+        window.jmedia.onchange(lastClass, newClass);
+        lastClass = newClass;
     };
 
     window.jmedia = {
@@ -73,7 +72,7 @@
         addBreakPoint: function(c, w) {
             breakPoints.push({class: c, width: w});
             breakPoints = breakPoints.sort(function(a, b) {
-                return a.width - b.width
+                return b.width - a.width
             });
             return this;
         },
@@ -82,7 +81,7 @@
          * called when the window is resized and the breakpoin is changed. the
          * breakpoint name is passed in as c
          */
-        onchange: function(c) {},
+        onchange: function(oldClass, newClass) {},
         /**
          * @callback
          * called when the window is resized but the breakpoint stays the same

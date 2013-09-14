@@ -47,13 +47,19 @@ window.jmedia
     .addBreakPoint('tablet', 800);
 
 // do stuff in the callback funtion
-window.jmedia.onchange = function(c) {
-    switch (c) {
-    case 'mobile':
-        createHamburgerMenu();
-        break;
-    case 'tablet':
+window.jmedia.onchange = function(oldClass, newClass) {
+    switch (oldClass) {
+    case "mobile":
         hideHamburgerMenu();
+        break;
+    }
+
+    switch (newClass) {
+    case "mobile":
+        showHamburgerMenu();
+        break;
+    case "tablet":
+        console.log("Tablet mode engaged.");
         break;
     }
 };
